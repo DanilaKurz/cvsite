@@ -1,0 +1,78 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f3f4f6;
+    padding: 0;
+    margin: 0;
+}
+
+.code-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #1e1e1e;
+    color: #ddd;
+    overflow: hidden;
+    z-index: -1;
+    opacity: 0.8;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.code-background pre {
+    margin: 0;
+    padding: 50px;
+}
+
+.code-background .line {
+    display: none;
+}
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.8);
+    position: relative;
+    z-index: 1;
+}
+
+.intro img {
+    max-width: 300px;
+    border-radius: 50%;
+}
+
+.intro .name {
+    font-size: 40px;
+    margin-top: 30px;
+}
+
+.intro .position {
+    font-size: 22px;
+    margin-top: 15px;
+    color: #666;
+}
+
+.summary {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.5s, transform 0.5s, visibility 0.5s 0.5s;
+    visibility: hidden;
+    position: relative;
+    z-index: 1;
+}
+
+.summary.active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s, transform 0.5s;
+    visibility: visible;
+}
