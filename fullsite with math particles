@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Резюме</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3f4f6;
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .intro {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .intro img {
+            max-width: 600px;
+            border-radius: 50%;
+        }
+
+        .intro .name {
+            font-size: 40px;
+            margin-top: 30px;
+        }
+
+        .intro .position {
+            font-size: 22px;
+            margin-top: 15px;
+            color: #666;
+        }
+
+        .summary {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.5s, transform 0.5s, visibility 0.5s 0.5s;
+            visibility: hidden;
+        }
+
+        .summary.active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s, transform 0.5s;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+
+<div class="intro">
+    <img src="your-image-link.jpg" alt="Ваше фото">
+    <div class="name">Grigory Leps, 45</div>
+    <div class="position">Sberbank, CTO</div>
+</div>
+
+<div class="summary">
+    <h2>Professional Summary</h2>
+    <p>Здесь ваш короткий рассказ о себе, ваших профессиональных навыках, опыте и достижениях.</p>
+</div>
+
+<div style="height:1000px;"></div>
+
+<script>
+    // Particle animation
+    class Particle {
+        constructor(){
+            this.x = random(0,width);
+            this.y = random(0,height);
+            this.r = random(12,24);
+            this.xSpeed = random(-0.2,0.2);
+            this.ySpeed = random(-0.2,0.2);
+            this.symbols = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', '*', '/', '=', '<', '>', '{', '}', '(', ')', '[', ']', ';', ',', '.'];
+            this.symbol = random(this.symbols);
+        }
+
+        createParticle() {
+            noStroke();
+            fill('rgba(200,169,169,0.5)');
+            text(this.symbol, this.x, this.y);
+        }
+
+        moveParticle() {
+            if(this.x < 0 || this.x > width)
+                this.xSpeed*=-1;
+            if(this.y < 0 || this.y > height)
+                this.ySpeed*=-1;
+            this.x+=this.xSpeed;
+            this.y+=this.ySpeed;
+        }
+
+        joinParticles(particles) {
+            particles.forEach(element =>{
+                let dis = dist(this.x,this.y,element.x,element.y);
+                if(dis < 85) {
+                    stroke('rgba(255,255,255,0.04)');
+                    line(this.x,this.y,element.x,element.y);
+                }
+            });
+        }
+    }
+
+    let particles = [];
+
+    function setup() {
+        createCanvas(window.innerWidth, window.innerHeight);
+        textSize(16);
+        for(let i = 0; i < width / 50; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function draw() {
+        background('#0f0f0f');
+        for(let i = 0; i < particles.length; i++) {
+            particles[i].createParticle();
+            particles[i].moveParticle();
+            particles[i].joinParticles(particles.slice(i));
+        }
+    }
+
+    // Scroll animation
+    window.addEventListener('scroll', function() {
+        const summary = document.querySelector('.summary');
+        const position = summary.getBoundingClientRect().top;
+        const windowHeight = window.innerHeight;
+
+        if (position <= (windowHeight / 2)) {
+            summary.classList.add('active');
+        } else {
+            summary.classList.remove('active');
+        }
+    });
+</script>
+
+</body>
+</html>
