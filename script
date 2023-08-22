@@ -1,0 +1,18 @@
+window.addEventListener('scroll', function() {
+    const summary = document.querySelector('.summary');
+    const position = summary.getBoundingClientRect().top;
+    const windowHeight = window.innerHeight;
+
+    if (position <= (windowHeight / 2)) {
+        summary.classList.add('active');
+    } else {
+        summary.classList.remove('active');
+    }
+
+    const lines = document.querySelectorAll('.code-background .line');
+    lines.forEach((line, index) => {
+        if (document.documentElement.scrollTop > (windowHeight / lines.length) * index) {
+            line.style.display = "block";
+        }
+    });
+});
