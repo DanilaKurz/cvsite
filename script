@@ -1,18 +1,11 @@
-window.addEventListener('scroll', function() {
-    const summary = document.querySelector('.summary');
-    const position = summary.getBoundingClientRect().top;
-    const windowHeight = window.innerHeight;
+    window.addEventListener('scroll', function() {
+        const aboutSection = document.querySelector('.about');
+        const sectionTop = aboutSection.getBoundingClientRect().top;
+        const sectionHeight = aboutSection.offsetHeight;
+        const windowHeight = window.innerHeight;
 
-    if (position <= (windowHeight / 2)) {
-        summary.classList.add('active');
-    } else {
-        summary.classList.remove('active');
-    }
-
-    const lines = document.querySelectorAll('.code-background .line');
-    lines.forEach((line, index) => {
-        if (document.documentElement.scrollTop > (windowHeight / lines.length) * index) {
-            line.style.display = "block";
+        if (sectionTop <= windowHeight && sectionTop >= -sectionHeight) {
+            let opacity = 1 - (sectionTop / (windowHeight * 1.5)); // Adjust the multiplier to control opacity
+            aboutSection.style.opacity = Math.min(opacity, 1); // Ensure opacity doesn't exceed 1
         }
     });
-});
