@@ -44,6 +44,7 @@ a:hover {
     opacity: 0;
     transition: opacity 0.3s;  /* Smooth out the opacity change */
     margin-bottom: 40vh;  /* Add whitespace equivalent to the height of the viewport */
+    background-color: black;
 }
 
 .about h2 {
@@ -65,7 +66,7 @@ a:hover {
   margin: auto;
   position: relative;
   left: -5px;
-  height: 900px;
+  height: 1000px;
 }
 
 .entries:before {
@@ -84,7 +85,7 @@ a:hover {
   float: left;
   padding: 20px;
   clear: both;
-  text-align: right;
+  text-align: left;
 }
 .entries .entry:not(:first-child) {
   margin-top: -50px;
@@ -96,7 +97,14 @@ a:hover {
   color: #000;
 }
 .entries .entry .title:before {
-  display: none;
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); /* Center the square vertically relative to the title */
+  width: 10px;  /* Square size */
+  height: 10px;  /* Square size */
+  background-color: #b00000;  /* Same color as the line for consistency */
+  right: -65px;  /* Position it to the left of the title */
 }
 .entries .entry .title.big:before {
   display: none;
@@ -112,6 +120,9 @@ a:hover {
   float: right;
 }
 
+.entries .entry:nth-child(2n) .title:before {
+  left: -65px;  /* Position it to the right of the title for even-numbered entries */
+}
 
 .footer a {
     color: #000;
