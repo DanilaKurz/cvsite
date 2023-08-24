@@ -1,11 +1,18 @@
-    window.addEventListener('scroll', function() {
-        const aboutSection = document.querySelector('.about');
-        const sectionTop = aboutSection.getBoundingClientRect().top;
-        const sectionHeight = aboutSection.offsetHeight;
-        const windowHeight = window.innerHeight;
+function adjustOpacity(section) {
+    const sectionTop = section.getBoundingClientRect().top;
+    const sectionHeight = section.offsetHeight;
+    const windowHeight = window.innerHeight;
 
-        if (sectionTop <= windowHeight && sectionTop >= -sectionHeight) {
-            let opacity = 1 - (sectionTop / (windowHeight * 1.5)); // Adjust the multiplier to control opacity
-            aboutSection.style.opacity = Math.min(opacity, 1); // Ensure opacity doesn't exceed 1
-        }
-    });
+    if (sectionTop <= windowHeight && sectionTop >= -sectionHeight) {
+        let opacity = 1 - (sectionTop / (windowHeight * 2));
+        section.style.opacity = Math.min(opacity, 1);
+    }
+}
+
+window.addEventListener('scroll', function() {
+    const aboutSection = document.querySelector('.about');
+    adjustOpacity(aboutSection);
+
+    const entriesSection = document.querySelector('.entries');
+    adjustOpacity(entriesSection);
+});
