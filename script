@@ -1,18 +1,88 @@
-window.addEventListener('scroll', function() {
-    const summary = document.querySelector('.summary');
-    const position = summary.getBoundingClientRect().top;
-    const windowHeight = window.innerHeight;
-
-    if (position <= (windowHeight / 2)) {
-        summary.classList.add('active');
-    } else {
-        summary.classList.remove('active');
+class Particle {
+    constructor() {
+        this.x = random(0, width);
+        this.y = random(0, height);
+        this.r = random(12, 24);
+        this.xSpeed = random(-0.2, 0.2);
+        this.ySpeed = random(-0.2, 0.2);
+        this.symbols = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', '*', '/', '=', '<', '>', '{', '}', '(', ')', '[', ']', ';', ',', '.'];
+        this.symbol = random(this.symbols);
     }
 
-    const lines = document.querySelectorAll('.code-background .line');
-    lines.forEach((line, index) => {
-        if (document.documentElement.scrollTop > (windowHeight / lines.length) * index) {
-            line.style.display = "block";
-        }
-    });
+    createParticle() {
+        noStroke();
+        fill('rgba(200,169,169,0.5)');
+        text(this.symbol, this.x, this.y);
+    }
+
+    moveParticle() {
+        if (this.x < 0 || this.x > width)
+            this.xSpeed *= -1;
+        if (this.y < 0 || this.y > height)
+            this.ySpeed *= -1;
+        this.x += this.xSpeed;
+        this.y += this.ySpeed;
+    }
+
+    joinParticles(particles) {
+        particles.forEach(element => {
+            let dis = dist(this.x, this.y, element.x, element.y);
+            if (dis < 85) {
+                stroke('rgba(255,255,255,0.04)');
+                line(this.x, this.y, element.x, element.y);
+            }
+        });
+    }
+}
+
+let particles = [];
+let canvas;
+
+function setup() {
+    canvas = createCanvas(document.querySelector('.about').clientWidth, document.querySelector('.about').clientHeight);
+    canvas.parent(document.querySelector('.about')); // Attaching the canvas to the .about element
+    textSize(16);
+    for (let i = 0; i < width / 25; i++) {
+        particles.push(new Particle());
+    }
+}
+
+function draw() {
+    background('#0f0f0f');
+    for (let i = 0; i < particles.length; i++) {
+        particles[i].createParticle();
+        particles[i].moveParticle();
+        particles[i].joinParticles(particles.slice(i));
+    }
+}
+
+function windowResized() {
+    resizeCanvas(document.querySelector('.about').clientWidth, document.querySelector('.about').clientHeight);
+}
+
+function adjustOpacity(section) {
+    const sectionTop = section.getBoundingClientRect().top;
+    const sectionHeight = section.offsetHeight;
+    const windowHeight = window.innerHeight;
+
+    if (sectionTop <= windowHeight && sectionTop >= -sectionHeight) {
+        let opacity = 1 - (sectionTop / (windowHeight * 2));
+        section.style.opacity = Math.min(opacity, 1);
+    }
+}
+
+window.addEventListener('scroll', function() {
+    const aboutWrapper = document.querySelector('.about-wrapper');
+    const rect = aboutWrapper.getBoundingClientRect();
+    const topOffset = rect.top;
+
+    canvas.style.transform = `translateY(${topOffset * 0.5}px)`;  /* Эффект параллакса: двигаем фон на половину от прокрутки */
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  AOS.init({
+    duration: 1200,
+    once: true, // Animation will only happen once
+    delay: 20, // Delay to start the animation (optional)
+  });
 });
